@@ -8,7 +8,7 @@ const { makeCompletion, preview } = require("./chatGPT.js");
 let dotenv = require("dotenv");
 dotenv.config();
 //const nodeCmd = require('node-cmd');
-//test
+//test2
 
 var app = express();
 

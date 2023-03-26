@@ -156,6 +156,7 @@ async function createCollection(page, name, browser, EANS, email){
     
 }
 
+
 process.on("message", async(message) => {
     let id = await run(message.EANS, message.name, message.body.email, message.headless);
     // send the results back to the parent process

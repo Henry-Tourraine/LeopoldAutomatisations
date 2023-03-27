@@ -56,16 +56,20 @@ async function shallowResearch(features, headless=true){
         
           let element = elements.nth(i);
           if(!((await element.textContent()).includes("uestion")) && i > 0){
-          let h3 = await element.locator("h3").first().textContent();
-          let infos=""
-          for(let u=1; u<await element.locator(".Z26q7c.UK95Uc").count(); u++){
-            let t= await element.locator(".Z26q7c.UK95Uc").nth(u).textContent();
-            if(!!t==true) infos += t;
-          }
-          console.log("h3 : "+h3);
-          console.log("infos : "+infos);
-          console.log("\n\n");
-          sitesList.push({h3, infos})
+            try{
+              let h3 = await element.locator("h3").first().textContent();
+              let infos=""
+              for(let u=1; u<await element.locator(".Z26q7c.UK95Uc").count(); u++){
+                let t= await element.locator(".Z26q7c.UK95Uc").nth(u).textContent();
+                if(!!t==true) infos += t;
+              }
+              console.log("h3 : "+h3);
+              console.log("infos : "+infos);
+              console.log("\n\n");
+              sitesList.push({h3, infos})
+            }catch(err){
+              console.log("no h3 in section ", err)
+            }
         }
       }
       

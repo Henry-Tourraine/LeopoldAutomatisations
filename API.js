@@ -125,7 +125,7 @@ app.post('/preview', async function (req, res) {
   forked_child_process.send({preview: req.body.preview});
   
   // listen for a response from the child process
-  forked_child_process.on("message", infos => {console.log("preview sent");res.json({content: infos, message: "everything is ok"})});
+  forked_child_process.on("message", infos => {console.log("preview sent");return res.json({content: infos, message: "everything is ok"})});
 
   
 })

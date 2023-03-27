@@ -213,7 +213,7 @@ const configuration = new Configuration({
 const openai = new OpenAIApi(configuration);
 
 
-async function makeCompletion(prompt="hello how are you ?", searchKeyWords=null){
+async function makeCompletion(prompt="hello how are you ?", searchKeyWords=[]){
   console.log("prompt : "+prompt);
     let response = {}
     if(prompt != null && prompt.length > 1){

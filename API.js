@@ -105,22 +105,14 @@ app.post('/', async function (req, res) {
      return;
   }
   let response;
-  if(req.body.searchKeyWords.length>0){
-    
-
+  
     const forked_child_process = childProcess.fork('./chatGPT.js');
    // send message to the child process
    forked_child_process.send({prompt: req.body.prompt, searhKeyWords: req.body.searchKeyWords});
    // listen for a response from the child process
    forked_child_process.on("message", infos => res.json({...infos}));
 
-  }else{
-    const forked_child_process = childProcess.fork('./chatGPT.js');
-   // send message to the child process
-   forked_child_process.send({prompt: req.body.prompt, searhKeyWords: null});
-   // listen for a response from the child process
-   forked_child_process.on("message", infos => res.json({...infos}));
-  }
+ 
    
 
 })

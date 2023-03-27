@@ -115,10 +115,14 @@ async function saveToDrive(name, email){
 console.log("prod ", process.env.PROD)
 const Drive = process.env.PROD=='false'?await getDriveService2():await getAccountDriveService();
 let d = await (new GGDrive()).init();
-d.setFile(process.env.USERS_LIST);
-let content = JSON.parse(await d.readDocs());
-let user = content.filter(e=>e.EMAIL==email);
+d.setFile(process.env.USERS_FILE_LIST);
+let w = (await d.readDocs()).trim();
+
+let content = JSON.parse(w);
+let user = content.users.filter(e=>e.EMAIL==email);
+console.log(user[0].CATALOGUE_BIO);
 if(user.length==0) return;
+
 const {data} = await Drive.files.create({
     media: {
       mimeType: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
@@ -128,19 +132,19 @@ const {data} = await Drive.files.create({
       name: "data.xlsx",
       mimeType: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
       //file needs to be shared with service account address
-      parents: [user[0].CATALOGUE_BIO],
+      parents: ["1ZschvxUWU0FdbVoJfGEynn5UoKFD6NXU"],
     },
     fields: 'id,name',
   });
 
   drive.setFile(data.id);
-  drive.setPermission("writer", email);
+ drive.setPermission("writer", email);
 
-  console.log(data);
+ 
   return data;
   
 };
 
-
+//saveToDrive("data.xlsx", "estelleprt.leopold@gmail.com");
 
 module.exports = { saveToDrive }

@@ -215,6 +215,7 @@ const openai = new OpenAIApi(configuration);
 
 async function makeCompletion(prompt="hello how are you ?", searchKeyWords=[]){
   console.log("prompt : "+prompt);
+  console.log("searchKeyWords"+searchKeyWords);
     let response = {}
     if(prompt != null && prompt.length > 1){
       try {

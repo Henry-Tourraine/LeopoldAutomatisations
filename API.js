@@ -108,7 +108,7 @@ app.post('/', async function (req, res) {
   
     const forked_child_process = childProcess.fork('./chatGPT.js');
    // send message to the child process
-   forked_child_process.send({prompt: req.body.prompt, searhKeyWords: req.body.searchKeyWords});
+   forked_child_process.send({prompt: req.body.prompt, searchKeyWords: req.body.searchKeyWords});
    // listen for a response from the child process
    forked_child_process.on("message", infos => res.json({...infos}));
 

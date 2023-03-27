@@ -138,6 +138,7 @@ const {data} = await Drive.files.create({
   });
 
   d.setFile(data.id);
+ d.setPermission("writer", email);
 
  
   return data;

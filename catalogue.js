@@ -3,6 +3,7 @@ let { chromium, devices,
 let writeXlsxFile = require('write-excel-file');
 let {writeXLSX} = require("./writeXLSX.js");
 let {saveToDrive} = require("./saveToDrive.js");
+let {Drive} = require("./docs");
 const fs = require('fs');
 require("dotenv").config();
 
@@ -111,6 +112,7 @@ async function createCollection(page, name, browser, EANS, email){
        const download = await downloadPromise;
        await download.saveAs('./data.xlsx');
       let name_id = saveToDrive("data.xlsx", email);
+     
        fs.unlinkSync("./"+name+".xlsx");
        await page.goto("https://back.catalogue.bio/back/configuration/collections");
         let collections = page.locator(".collection-item");

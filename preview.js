@@ -13,7 +13,7 @@ async function preview(query){
   
   
   process.on("message", async(message) => {
-    let query = await preview(message.query);
+    let query = await preview(message.preview);
     // send the results back to the parent process
     process.send(query);
     // kill the child process

@@ -6,7 +6,7 @@ const process = require('process');
 
 let XLSX = require('xlsx');
 const stream = require('stream');
-const Drive = require("./docs.js");
+const {GGDrive} = require("./docs.js");
 const { google } = require('googleapis');
 const {authenticate} = require('@google-cloud/local-auth');
 const dotenv = require("dotenv");
@@ -114,7 +114,7 @@ async function  getAccountDriveService(){
 async function saveToDrive(name, email){
 console.log("prod ", process.env.PROD)
 const Drive = process.env.PROD=='false'?await getDriveService2():await getAccountDriveService();
-let d = new Drive().init();
+let d = new GGDrive().init();
 d.setFile(process.env.USERS_LIST);
 let content = JSON.parse(d.readDocs());
 let user = content.filter(e=>e.EMAIL==email);

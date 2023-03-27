@@ -131,4 +131,4 @@ async function  getAccountDriveService(){
 
  
 
- exports.module = {Drive}
+ exports.module = {GGDrive : Drive}

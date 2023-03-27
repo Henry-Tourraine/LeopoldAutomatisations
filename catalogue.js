@@ -3,7 +3,6 @@ let { chromium, devices,
 let writeXlsxFile = require('write-excel-file');
 let {writeXLSX} = require("./writeXLSX.js");
 let {saveToDrive} = require("./saveToDrive.js");
-let {Drive} = require("./docs");
 const fs = require('fs');
 require("dotenv").config();
 

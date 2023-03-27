@@ -57,10 +57,10 @@ async function shallowResearch(features, headless=true){
           let element = elements.nth(i);
           if(!((await element.textContent()).includes("uestion")) && i > 0){
             try{
-              let h3 = await element.locator("h3").first().textContent();
+              let h3 = await element.locator("h3").first({timeout: 10000}).textContent();
               let infos=""
               for(let u=1; u<await element.locator(".Z26q7c.UK95Uc").count(); u++){
-                let t= await element.locator(".Z26q7c.UK95Uc").nth(u).textContent();
+                let t= await element.locator(".Z26q7c.UK95Uc").nth(u, {timeout: 10000}).textContent();
                 if(!!t==true) infos += t;
               }
               console.log("h3 : "+h3);

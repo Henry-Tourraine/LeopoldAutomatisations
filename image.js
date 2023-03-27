@@ -12,7 +12,7 @@ async function sleep(time){
   return await new Promise((res, rej)=>{setTimeout(()=>res(), time)});
 }
 
-async function run(EANS=["3770009690256","3380390410403","3380390410304"], headless=false){
+async function run(EANS=["3770009690256","3380390410403","3380390410304"], headless=true){
 
     const browser = await chromium.launch({headless});
     const context = await browser.newContext();
@@ -109,7 +109,7 @@ async function run(EANS=["3770009690256","3380390410403","3380390410304"], headl
 }
 
 
-async function run2(EANS=[["3770009690256", "GRAINE DE SENS"],["3380390410403", "PRIMEAL"],["3380390410304", "PRIMEAL"]], headless=false){
+async function run2(EANS=[["3770009690256", "GRAINE DE SENS"],["3380390410403", "PRIMEAL"],["3380390410304", "PRIMEAL"]], headless=true){
     
     const browser = await chromium.launch({headless});
     const context = await browser.newContext();

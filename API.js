@@ -52,7 +52,7 @@ app.post('/', async function (req, res) {
    } 
    const forked_child_process = childProcess.fork('./catalogue.js');
    // send message to the child process
-   forked_child_process.send({EANS:req.body.EANS, name: req.body.name, email: req.body.email, headless: false});
+   forked_child_process.send({EANS:req.body.EANS, name: req.body.name, email: req.body.email, headless: true});
    // listen for a response from the child process
    forked_child_process.on("message", id => res.json({data: id, message: "everything is ok"}));
 
@@ -70,7 +70,7 @@ app.post('/', async function (req, res) {
 
    const forked_child_process = childProcess.fork('./openfoodfacts.js');
    // send message to the child process
-   forked_child_process.send({EANS:req.body.EANS, headless: false});
+   forked_child_process.send({EANS:req.body.EANS, headless: true});
    // listen for a response from the child process
    forked_child_process.on("message", infos => res.json({data: infos, message: "everything is ok"}));
 
@@ -89,7 +89,7 @@ app.post('/', async function (req, res) {
 
    const forked_child_process = childProcess.fork('./image.js');
    // send message to the child process
-   forked_child_process.send({EANS:req.body.EANS, headless: false});
+   forked_child_process.send({EANS:req.body.EANS, headless: true});
    // listen for a response from the child process
    forked_child_process.on("message", infos => res.json({data: infos, message: "everything is ok"}));
   

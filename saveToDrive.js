@@ -116,7 +116,7 @@ console.log("prod ", process.env.PROD)
 const Drive = process.env.PROD=='false'?await getDriveService2():await getAccountDriveService();
 let d = await (new GGDrive()).init();
 d.setFile(process.env.USERS_LIST);
-let content = JSON.parse(d.readDocs());
+let content = JSON.parse(await d.readDocs());
 let user = content.filter(e=>e.EMAIL==email);
 if(user.length==0) return;
 const {data} = await Drive.files.create({

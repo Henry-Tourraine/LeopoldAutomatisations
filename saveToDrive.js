@@ -132,7 +132,7 @@ const {data} = await Drive.files.create({
       name: "data.xlsx",
       mimeType: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
       //file needs to be shared with service account address
-      parents: ["1ZschvxUWU0FdbVoJfGEynn5UoKFD6NXU"],
+      parents: [process.env.USERS_FILE_LIST],
     },
     fields: 'id,name',
   });

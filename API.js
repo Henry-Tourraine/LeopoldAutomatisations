@@ -105,7 +105,7 @@ app.post('/', async function (req, res) {
      return;
   }
   let response;
-  if(!!req.body.searchKeyWords == true){
+  if(req.body.searchKeyWords.length>0){
     
 
     const forked_child_process = childProcess.fork('./chatGPT.js');

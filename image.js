@@ -21,7 +21,7 @@ async function run(EANS=["3770009690256","3380390410403","3380390410304"], headl
     if(await page.locator(".QS5gu.sy4vM").count() > 0) await page.click(".QS5gu.sy4vM")
     
     let t={};
-    
+    let infos = {};
     
     while(EANS.length>0){
         let EAN = EANS[0];
@@ -85,8 +85,19 @@ async function run(EANS=["3770009690256","3380390410403","3380390410304"], headl
         await new Promise((res, rej)=>{setTimeout(()=>{res()}, 2000)});
         if(await page.locator(".QS5gu.sy4vM").count() > 0) await page.click(".QS5gu.sy4vM")
         let images = await page.evaluate(()=>{
-            return [...document.querySelectorAll("img.rg_i.Q4LuWd")].slice(0, 10).map(e=>e.src);
+            return [...document.querySelectorAll("img.rg_i.Q4LuWd")].slice(0, 5).map(e=>e.src);
         })
+
+        if(infos.title != undefined){
+            await page.goto("https://www.google.com/search?q="+infos.title+"&tbm=isch&tbs=isz:l");
+            await new Promise((res, rej)=>{setTimeout(()=>{res()}, 2000)});
+            if(await page.locator(".QS5gu.sy4vM").count() > 0) await page.click(".QS5gu.sy4vM")
+            images = [...images,...(await page.evaluate(()=>{
+                return [...document.querySelectorAll("img.rg_i.Q4LuWd")].slice(0, 5).map(e=>e.src);
+            }))];
+        }
+
+
         for(let i=0; i<images.length; i++){
             
             const buffer = Buffer.from(images[i].split(",")[1], "base64");

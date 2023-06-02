@@ -20,6 +20,7 @@ async function run(EANS=["3770009690256","3380390410403","3380390410304"], headl
     const browser = await chromium.launch({headless});
     const context = await browser.newContext();
     const page = await context.newPage();
+    await page.setDefaultTimeout(300000);
     await page.goto("https://www.google.com");
     if(await page.locator(".QS5gu.sy4vM").count() > 0) await page.click(".QS5gu.sy4vM")
     

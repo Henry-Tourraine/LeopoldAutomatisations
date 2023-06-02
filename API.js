@@ -29,16 +29,16 @@ app.use(express.static('public'));
 app.set("view engine", "ejs");
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-/*
-app.use(bodyParser.urlencoded({
-   extended: true
- }));
- */
 
 
 app.use(cors());
+/*
+Chaque requête reçue est ensuite traitée sur un autre thread
+*/
 
-
+/*
+Route permettant d'accéder à l'automatisation "Catalogue.bio"
+*/
 app.post('/', async function (req, res) {
    console.log("request to /")
    console.log(req.body.EANS);
@@ -55,11 +55,13 @@ app.post('/', async function (req, res) {
    forked_child_process.send({EANS:req.body.EANS, name: req.body.name, email: req.body.email, headless: true});
    // listen for a response from the child process
    forked_child_process.on("message", id => res.json({data: id, message: "everything is ok"}));
-
- 
    
  })
 
+
+ /*
+Route permettant d'accéder à l'automatisation "OpenFoodFact"
+*/
  app.post('/openfoodfacts', async function (req, res) {
    console.log("request to /openfoodfacts")
    console.log(req.body.EANS);
@@ -78,7 +80,9 @@ app.post('/', async function (req, res) {
  })
 
  
-
+/*
+Route permettant d'accéder à l'automatisation "Recherches d'images"
+*/
  app.post('/images', async function (req, res) {
    console.log("request to /images")
    console.log(req.body.EANS);
@@ -96,7 +100,9 @@ app.post('/', async function (req, res) {
  })
 
 
-
+/*
+Route permettant d'accéder à l'automatisation "Description longue"
+*/
  app.post('/descriptionCompletion', async function (req, res) {
   console.log("request to /descriptionCompletion")
   console.log(req.body.theme, req.body.searchKeyWords);
@@ -113,10 +119,12 @@ app.post('/', async function (req, res) {
    forked_child_process.on("message", infos => res.json({...infos}));
 
  
-   
-
 })
 
+
+/*
+Route obsolète permettant de retourner une prévue des résultats google
+*/
 app.post('/preview', async function (req, res) {
   console.log("request to  /preview");
   if(!!req.body.preview==false) res.send("no preview");
@@ -130,6 +138,9 @@ app.post('/preview', async function (req, res) {
   
 })
 
+/*
+Route permettant de s'assurer que le serveur tourne
+*/
  app.get('/', function (req, res) {
     
     res.send("hello");

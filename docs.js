@@ -13,6 +13,9 @@ let fileId = process.env.USERS_FILE_LIST;
 const SCOPES = ['https://www.googleapis.com/auth/drive'];
 
 
+/*
+permet de convertir un string en stream
+*/
 class ReadableString extends Stream.Readable {
  
   

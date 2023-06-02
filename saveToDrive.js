@@ -76,24 +76,10 @@ async function authorize() {
   }
   return client;
 }
-async function listFiles(authClient) {
-  const drive = google.drive({version: 'v3', auth: authClient});
-  const res = await drive.files.list({
-    pageSize: 10,
-    fields: 'nextPageToken, files(id, name)',
-  });
-  const files = res.data.files;
-  if (files.length === 0) {
-    console.log('No files found.');
-    return;
-  }
 
-  console.log('Files:');
-  files.map((file) => {
-    console.log(`${file.name} (${file.id})`);
-  });
-}
-//https://developers.google.com/drive/api/quickstart/nodejs?hl=fr
+/*
+code récupéré du tutorial https://developers.google.com/drive/api/quickstart/nodejs?hl=fr
+*/
 let getDriveService2 = async()=>{
     let authClient = await authorize();
     const drive = google.drive({version: 'v3', auth: authClient});
@@ -132,18 +118,24 @@ const {data} = await Drive.files.create({
       name: "data.xlsx",
       mimeType: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
       //file needs to be shared with service account address
-      parents: [user[0].CATALOGUE_BIO],
+      parents: [process.env.PROD=="true"?user[0].CATALOGUE_BIO:process.env.FOLDER_ID],
     },
     fields: 'id,name',
   });
 
-  d.setFile(data.id);
- d.setPermission("writer", email);
+
+  if(process.env.PROD=="true"){
+    d.setFile(data.id);
+    d.setPermission("writer", email);
+  }
+ 
 
  
   return data;
   
 };
+
+
 
 //saveToDrive("data.xlsx", "estelleprt.leopold@gmail.com");
 

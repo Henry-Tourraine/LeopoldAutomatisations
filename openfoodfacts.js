@@ -1,10 +1,12 @@
 let { chromium, devices, defineConfig } = require('@playwright/test');
+let {sleep} = require("./utils");
 
-async function sleep(time){
-    return await new Promise((res, rej)=>{setTimeout(()=>res(), time)});
-  }
   
-async function run(EANS, headless=true){
+
+/*
+permet de récupérer les informations nutritionnelles, le nom du produit ainsi que la marque correspondants à chaque EAN
+*/
+async function run(EANS=["994390203920"], headless=true){
   
       const browser = await chromium.launch({headless});
       const context = await browser.newContext();
@@ -24,13 +26,19 @@ async function run(EANS, headless=true){
         }
         try{
             let brand = document.querySelector("#field_brands").textContent;
+            if(brand){
+                brand = brand.replace(/\n/g, "").split(":");
+                if(brand.length>0){
+                    brand = brand[1].trim();
+                }
+            }
             t = {...t, brand}
         }catch(e){
 
         }
         try{
             let ingredients = document.querySelector("#panel_ingredients_content").textContent.includes("ajouter")?null:document.querySelector("#panel_ingredients_content").textContent.trim(); 
-            ingredients = ingredients.replace("\n", "");
+            ingredients = ingredients.replace(/\n/g, "");
             t = {...t, ingredients}
         }catch(e){
 
@@ -58,7 +66,7 @@ async function run(EANS, headless=true){
         EANS.pop();
         }
     await browser.close();
-    return pagesInfos
+    return pagesInfos;
   }
 
 

@@ -12,6 +12,9 @@ async function sleep(time){
   return await new Promise((res, rej)=>{setTimeout(()=>res(), time)});
 }
 
+/*
+permet de récupérer 10 images au format .jpeg et encodée en base64 depuis OpenFoodFacts Google image 
+*/
 async function run(EANS=["3770009690256","3380390410403","3380390410304"], headless=true){
 
     const browser = await chromium.launch({headless});
@@ -119,7 +122,9 @@ async function run(EANS=["3770009690256","3380390410403","3380390410304"], headl
     
 }
 
-
+/*
+version alternative et obsolète de run
+*/
 async function run2(EANS=[["3770009690256", "GRAINE DE SENS"],["3380390410403", "PRIMEAL"],["3380390410304", "PRIMEAL"]], headless=true){
     
     const browser = await chromium.launch({headless});
@@ -222,6 +227,3 @@ process.on("message", async(message) => {
 })
 
 
-//module.exports = {getImages: run, getImagesWithOFF: run2};
-//const base64 = fs.readFileSync("engagements22.jpg", "base64");
-//console.log(base64);

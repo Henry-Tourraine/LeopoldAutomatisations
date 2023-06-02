@@ -1,49 +1,48 @@
-let { chromium, devices, 
+let { chromium, firefox, devices, 
  } = require('@playwright/test');
 let writeXlsxFile = require('write-excel-file');
 let {writeXLSX} = require("./writeXLSX.js");
 let {saveToDrive} = require("./saveToDrive.js");
+let {sleep} = require("./utils");
 const fs = require('fs');
 require("dotenv").config();
 
 
-module.exports = 
-({
-  use: {
-    video: 'on',
-  },
-});
-
 let data = [];
 let clickTimeout = { timeout: 3000000 }
 
-async function sleep(time){
-  return await new Promise((res, rej)=>{setTimeout(()=>res(), time)});
-}
 
+
+/*
+permet de soumettre les EANS au site catalogue.bio et de récupérer les informations concernant ces EANS
+*/
 async function run(EANS=["3483190000154"], name="test_", email=null, headless=true){
 
     const browser = await chromium.launch({headless});
-    const context = await browser.newContext({recordVideo: { 
+    const context = await browser.newContext(/*{recordVideo: { 
         dir: 'videos/',
         size: { width: 640, height: 480 }
-     } });
+     } }*//*{storageState: 'auth.json'}*/);
     const page = await context.newPage();
 
    await connexion(page);
    
    
-   //await getCollections(page);
+  
    let id = await createCollection(page, name, browser, EANS, email);
    context.close();
    return id;
 
   
 }
-
+/*
+connexion au site catalogue bio isolée
+*/
 async function connexion(page){
     await page.goto('https://catalogue.bio', { timeout: 10000000 });
+    await sleep(2000);
     await page.locator(".btn.btn-outline-dark.rounded-pill.m-2").first().click(clickTimeout);
+    await sleep(6000);
     await page.locator("#user_data_login").first({ timeout: 10000000 }).fill(process.env.ID);
     
     await page.evaluate(()=>{
@@ -55,6 +54,10 @@ async function connexion(page){
 
 }
 
+
+/*
+fonction osbolète permettant de lister les collections du compte 
+*/
 async function getCollections(page){
     await page.locator("a[title='Configuration'] img").first().click(clickTimeout);
     let collections = page.locator(".collection-item");
@@ -64,11 +67,17 @@ async function getCollections(page){
     }
 }
 
+/*
+permet de créer un fichier excel à partir des EANS
+*/
 async function createEAN(name, EANS){
   await writeXLSX(name, EANS.map(ean=>{return {"EAN": ean}}));
 return;
 }
 
+/*
+permet de créer une collection sur le site catalogue.bio, de lui fournir des EANS, télécharger les informations présentes sur le site puis de le téléverser sur Google Drive
+*/
 async function createCollection(page, name, browser, EANS, email){
     await page.goto("https://back.catalogue.bio/back/configuration/collections");
     console.log("createCollection EANS ",name, EANS);

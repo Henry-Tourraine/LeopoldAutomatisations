@@ -3,18 +3,19 @@ let axios = require("axios");
 const fs = require('fs');
 require("dotenv").config();
 const { Configuration, OpenAIApi } = require("openai");
-const { count } = require('console');
-const { apigeeregistry } = require('googleapis/build/src/apis/apigeeregistry/index.js');
+let {sleep} = require("./utils");
 const { features } = require('process');
 
 let data = [];
 let clickTimeout = { timeout: 3000000 }
 
-async function sleep(time){
-  return await new Promise((res, rej)=>{setTimeout(()=>res(), time)});
-}
-//shallowResearch([{name:"origine", value:"Quelle est l'origine de la courgette ?"}], false);
 
+
+
+/*
+permet de d'effectuer une recherche superficielle sur Google
+récupère la première méta-description ainsi que les questions/réponses.
+*/
 async function shallowResearch(features, headless=true){
 
     const browser = await chromium.launch({headless, use: {
@@ -198,25 +199,13 @@ async function shallowResearch(features, headless=true){
       return results;
     
 }
+
+
+
+
 /*
-let start = new Date().getTime();
-let l = ['pizza royale'];
-(async()=>{
-while(l.length>0){
-  await shallowResearch(l[0], ['origine'], false);
-  l.shift();
-}
-})()
-let end = new Date().getTime();
-console.log(((end-start)/1000)+ "s");
+permet de soumettre un prompt à chatGPT.
 */
-
-const configuration = new Configuration({
-  apiKey: process.env.OPENAI_API_KEY,
-});
-const openai = new OpenAIApi(configuration);
-
-
 async function makeCompletion(prompt="hello how are you ?", searchKeyWords=[]){
   console.log("prompt : "+prompt);
   console.log("searchKeyWords"+searchKeyWords);
@@ -270,6 +259,10 @@ async function makeCompletion(prompt="hello how are you ?", searchKeyWords=[]){
     return response;
 }
 
+
+/*
+fonction osbolète permettant de récupérer le contenu HTML d'une page de résultats Google
+*/
 async function preview(query){
   let browser = await chromium.launch({headless: true});
   let page = await browser.newPage();
@@ -291,4 +284,3 @@ process.on("message", async(message) => {
 
 
 
-//module.exports = {makeCompletion: makeCompletion, preview: preview}
